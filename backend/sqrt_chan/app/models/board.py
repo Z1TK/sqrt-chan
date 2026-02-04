@@ -2,7 +2,7 @@ import slugify
 from sqlalchemy import Boolean, Text, event
 from sqlalchemy.orm import Mapped, mapped_column, relationship
 
-from .base import Base
+from backend.sqrt_chan.app.models.base import Base
 
 
 class Board(Base):
@@ -10,7 +10,7 @@ class Board(Base):
     slug: Mapped[str] = mapped_column(unique=True)
     description: Mapped[str] = mapped_column(Text)
     is_nsfw: Mapped[bool] = mapped_column(Boolean, server_default="false")
-    threads: Mapped["Thread"] = mapped_column(
+    threads: Mapped["Thread"] = relationship(
         "Thread", back_populates="thread", cascade="all, delete-orphan"
     )
 
