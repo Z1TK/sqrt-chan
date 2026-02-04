@@ -3,7 +3,7 @@ from datetime import datetime
 from sqlalchemy import Boolean, ForeignKey, String, Text, func
 from sqlalchemy.orm import Mapped, mapped_column
 
-from .base import Base
+from backend.sqrt_chan.app.models.base import Base
 
 
 class Post(Base):

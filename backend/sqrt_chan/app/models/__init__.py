@@ -1,1 +1,0 @@
-from backend.sqrt_chan.app.models.base import Base
