@@ -5,7 +5,7 @@ from sqlalchemy import pool
 from sqlalchemy.engine import Connection
 from sqlalchemy.ext.asyncio import async_engine_from_config
 
-from backend.sqrt_chan.app.database.database import db_url
+from backend.sqrt_chan.app.database.db import db_url
 from backend.sqrt_chan.app.models.base import Base
 from backend.sqrt_chan.app.models.board import Board
 from backend.sqrt_chan.app.models.post import Post
