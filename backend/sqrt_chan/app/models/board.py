@@ -1,7 +1,8 @@
+from datetime import datetime
+
 import slugify
 from sqlalchemy import Boolean, Text, event, func
 from sqlalchemy.orm import Mapped, mapped_column, relationship
-from datetime import datetime
 
 from backend.sqrt_chan.app.models.base import Base
 
