@@ -12,11 +12,11 @@ async def get_async_session():
             yield session
             await session.commit()
         finally:
-            session.close()
+            await session.close()
 
 
-def get_repository[T](repo: type[T]) -> Callable[[AsyncSession], T]:
-    def _get_repo(session: AsyncSession = Depends(get_async_session)) -> T:
-        return repo(session)
+def get_service[S, R](service: type[S], repo: type[R]) -> Callable[[AsyncSession], S]:
+    def _get_service(session: AsyncSession = Depends(get_async_session)) -> S:
+        return service(repo(session))
 
-    return _get_repo
+    return _get_service

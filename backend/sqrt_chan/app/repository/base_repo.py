@@ -1,7 +1,7 @@
 from sqlalchemy import delete, select, update
 from sqlalchemy.ext.asyncio import AsyncSession
 
-from backend.sqrt_chan.app.decorators import handler_db_errors
+from backend.sqrt_chan.app.utils.decorators import handler_db_errors
 from backend.sqrt_chan.app.models.base import Base
 
 
@@ -14,12 +14,12 @@ class BaseRepository[T: Base]:
     async def get_all(self) -> list[T]:
         stmt = select(self.model)
         res = await self.session.execute(stmt)
-        return res.scalar.all()
+        return res.scalars().all()
 
     @handler_db_errors
     async def create(self, **kwargs) -> T:
         obj = self.model(**kwargs)
-        self.session.add()
+        self.session.add(obj)
         await self.session.commit()
         await self.session.refresh(obj)
         return obj

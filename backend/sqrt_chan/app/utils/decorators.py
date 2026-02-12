@@ -10,18 +10,20 @@ def handler_db_errors(func):
         try:
             return await func(self, *arg, **kwargs)
         except IntegrityError as e:
-            self.session.rollback()
+            await self.session.rollback()
             print(e)
             raise
         except OperationalError as e:
-            self.session.rollback()
+            await self.session.rollback()
             print(e)
             raise
         except DataError as e:
-            self.session.rollback()
+            await self.session.rollback()
             print(e)
             raise
         except NoResultFound as e:
-            self.session.rollback()
+            await self.session.rollback()
             print(e)
             raise
+
+    return wrapper
