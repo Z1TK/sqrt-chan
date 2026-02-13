@@ -11,13 +11,20 @@ board = APIRouter(prefix="/api/board")
 @board.post("", response_model=BoardPreview)
 async def create_new_board(
     board_data: BoardCS,
-    repo: BoardService = Depends(get_service(BoardService, BoardRepository)),
+    service: BoardService = Depends(get_service(BoardService, BoardRepository)),
 ):
-    return await repo.create_board(board_data)
+    return await service.create_board(board_data)
 
 
 @board.get("", response_model=list[BoardPreview])
 async def get_all_boards(
-    repo: BoardService = Depends(get_service(BoardService, BoardRepository))
+    service: BoardService = Depends(get_service(BoardService, BoardRepository))
 ):
-    return await repo.all_boards()
+    return await service.all_boards()
+
+@board.get('/{id}', response_model=BoardPreview)
+async def get_board_by_id(
+    id: int,
+    service: BoardService = Depends(get_service(BoardService, BoardRepository))
+):
+    return await service.get_board(id)

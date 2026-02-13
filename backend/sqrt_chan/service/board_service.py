@@ -13,3 +13,6 @@ class BoardService:
     async def create_board(self, dto: BoardCS):
         value = dto.model_dump()
         return await self.board_repo.create(**value)
+    
+    async def get_board(self, board_id: int):
+        return await self.board_repo.get_by_id(board_id)

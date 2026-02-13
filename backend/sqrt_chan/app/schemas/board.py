@@ -1,7 +1,7 @@
 from datetime import datetime
 from typing import Annotated
 
-from pydantic import BaseModel, Field, ConfigDict
+from pydantic import BaseModel, ConfigDict, Field
 
 from backend.sqrt_chan.app.schemas.thread import ThreadPreview
 
@@ -25,6 +25,7 @@ class BoardPreview(BaseModel):
 
 class BoardUS(BaseModel):
     bump_limit: int | None = None
+
 
 class BoardRS(BoardPreview):
     model_config = ConfigDict(from_attributes=True)

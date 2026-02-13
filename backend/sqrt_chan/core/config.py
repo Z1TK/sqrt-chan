@@ -10,6 +10,8 @@ class Settings(BaseSettings):
     db_port: str
     db_name: str
 
+    salt: str
+
     model_config = SettingsConfigDict(
         env_file=os.path.abspath(
             os.path.join(os.path.dirname(__file__), "../../../", ".env")
