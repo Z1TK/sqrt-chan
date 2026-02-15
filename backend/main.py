@@ -8,4 +8,4 @@ app = FastAPI()
 
 app.include_router(board)
 app.include_router(thread)
-app.include_router(posts)
+# app.include_router(posts)

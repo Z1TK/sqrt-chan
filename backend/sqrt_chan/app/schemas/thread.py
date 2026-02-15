@@ -7,14 +7,13 @@ from backend.sqrt_chan.app.schemas.post import PostRS
 
 
 class ThreadCS(BaseModel):
-    board_id: int
     title: Annotated[str, Field(max_length=255)]
     content: str | None = None
     image: Annotated[str | None, Field(max_length=255)] = None
 
 
 class ThreadPreview(BaseModel):
-    board_id: int
+    board_slug: str
     id: int
     title: Annotated[str, Field(max_length=255)]
     content: str | None = None
@@ -26,9 +25,12 @@ class ThreadPreview(BaseModel):
 
 
 class ThreadRS(ThreadPreview):
-    posts: list[PostRS]
+    posts: list[PostRS] | None
 
 
 class ThreadUS(BaseModel):
+    title: str | None = None
+    content: str | None = None
+    image: str | None = None
     is_closed: bool | None = None
     is_archived: bool | None = None

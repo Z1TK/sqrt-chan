@@ -1,5 +1,6 @@
+from sqlalchemy import select, update, delete
 from sqlalchemy.ext.asyncio import AsyncSession
-from sqlalchemy import select
+from sqlalchemy.orm import selectinload
 
 from backend.sqrt_chan.app.models.board import Board
 from backend.sqrt_chan.app.repository.base_repo import BaseRepository
@@ -11,7 +12,35 @@ class BoardRepository(BaseRepository[Board]):
         super().__init__(Board, async_session)
 
     @handler_db_errors
-    async def get_by_id(self, model_id: int):
-        stmt = select(self.model).filter_by(id=model_id)
+    async def get_all(self):
+        stmt = select(self.model)
+        res = await self.session.execute(stmt)
+        return res.scalars().all()
+
+    @handler_db_errors
+    async def get_by_slug(self, model_slug: str):
+        stmt = (
+            select(self.model)
+            .options(selectinload(self.model.threads))
+            .where(self.model.slug == model_slug)
+        )
         res = await self.session.execute(stmt)
         return res.scalar_one_or_none()
+
+    @handler_db_errors
+    async def update(self, model_slug: str, **kwargs):
+        stmt = (
+            update(self.model)
+            .where(self.model.slug == model_slug)
+            .values(**kwargs)
+            .returning(self.model)
+        )
+        res = await self.session.execute(stmt)
+        await self.session.flush()
+        return res.scalar_one_or_none()
+
+    @handler_db_errors
+    async def remove(self, model_slug) -> None:
+        stmt = delete(self.model).where(self.model.slug == model_slug)
+        await self.session.execute(stmt)
+        await self.session.flush()

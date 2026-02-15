@@ -5,7 +5,7 @@ from backend.sqrt_chan.app.schemas.board import *
 from backend.sqrt_chan.app.utils.session import get_service
 from backend.sqrt_chan.service.board_service import BoardService
 
-board = APIRouter(prefix="/api/board")
+board = APIRouter(prefix="/boards")
 
 
 @board.post("", response_model=BoardPreview)
@@ -22,9 +22,27 @@ async def get_all_boards(
 ):
     return await service.all_boards()
 
-@board.get('/{id}', response_model=BoardPreview)
-async def get_board_by_id(
-    id: int,
-    service: BoardService = Depends(get_service(BoardService, BoardRepository))
+
+@board.get("/{slug}", response_model=BoardRS)
+async def get_board_by_slug(
+    slug: str,
+    service: BoardService = Depends(get_service(BoardService, BoardRepository)),
 ):
-    return await service.get_board(id)
+    return await service.get_board(slug)
+
+
+@board.patch("", response_model=BoardPreview)
+async def update_board_by_slug(
+    slug: str,
+    board_data: BoardUS,
+    service: BoardService = Depends(get_service(BoardService, BoardRepository)),
+):
+    return await service.update_board(slug, board_data)
+
+
+@board.delete("")
+async def delete_board_by_slug(
+    slug: str,
+    service: BoardService = Depends(get_service(BoardService, BoardRepository)),
+):
+    await service.delete_board(slug)

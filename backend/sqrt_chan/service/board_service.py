@@ -13,6 +13,13 @@ class BoardService:
     async def create_board(self, dto: BoardCS):
         value = dto.model_dump()
         return await self.board_repo.create(**value)
-    
-    async def get_board(self, board_id: int):
-        return await self.board_repo.get_by_id(board_id)
+
+    async def get_board(self, board_slug: str):
+        return await self.board_repo.get_by_slug(board_slug)
+
+    async def update_board(self, board_slug: str, dto: BoardUS):
+        value = dto.model_dump(exclude_unset=True)
+        return await self.board_repo.update(board_slug, **value)
+
+    async def delete_board(self, board_slug: str):
+        return await self.board_repo.remove(model_slug=board_slug)

@@ -2,11 +2,11 @@ from fastapi import APIRouter, Depends, Request
 
 from backend.sqrt_chan.app.repository.post_repo import PostRepository
 from backend.sqrt_chan.app.schemas.post import *
+from backend.sqrt_chan.app.utils.hash import get_user_ip
 from backend.sqrt_chan.app.utils.session import get_service
 from backend.sqrt_chan.service.post_service import PostService
-from backend.sqrt_chan.app.utils.hash import get_user_ip
 
-posts = APIRouter(prefix="/api/posts")
+posts = APIRouter(prefix="/posts")
 
 
 @posts.post("", response_model=PostRS)
