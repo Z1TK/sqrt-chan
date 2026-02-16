@@ -1,5 +1,6 @@
 from backend.sqrt_chan.app.repository.thread_repo import ThreadRepository
 from backend.sqrt_chan.app.schemas.thread import *
+from backend.sqrt_chan.service.post_service import PostService
 
 
 class ThreadService:
@@ -11,8 +12,12 @@ class ThreadService:
         value["board_slug"] = board_slug
         return await self.thread_repo.create(**value)
 
-    async def get_threads(self, board_slug: str):
-        threads = await self.thread_repo.get_all(board_slug)
+    async def get_available_threads(self, board_slug: str, limit: int = 20):
+        threads = await self.thread_repo.get_all(board_slug, True, limit)
+        return [thread for thread in threads]
+    
+    async def get_archive_threads(self, board_slug: str, limit: int = 100):
+        threads = await self.thread_repo.get_all(board_slug, True, limit)
         return [thread for thread in threads]
 
     async def get_thread(self, board_slug: str, thread_id: int):

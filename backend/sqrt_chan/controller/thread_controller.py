@@ -8,7 +8,7 @@ from backend.sqrt_chan.service.thread_service import ThreadService
 thread = APIRouter()
 
 
-@thread.post("/{board_slug}/threads", response_model=ThreadPreview)
+@thread.post("/{board_slug}/thread", response_model=ThreadPreview)
 async def create_new_thread(
     board_slug: str,
     thread_data: ThreadCS,
@@ -22,7 +22,14 @@ async def get_all_threads(
     board_slug: str,
     service: ThreadService = Depends(get_service(ThreadService, ThreadRepository)),
 ):
-    return await service.get_threads(board_slug)
+    return await service.get_available_threads(board_slug)
+
+@thread.get("/{board_slug}/archive", response_model=list[ThreadPreview])
+async def get_all_threads(
+    board_slug: str,
+    service: ThreadService = Depends(get_service(ThreadService, ThreadRepository)),
+):
+    return await service.get_archive_threads(board_slug)
 
 
 @thread.get("/{board_slug}/threads/{thread_id}", response_model=ThreadRS)

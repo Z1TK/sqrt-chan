@@ -1,5 +1,4 @@
-from sqlalchemy import delete, select, update
-from sqlalchemy import and_
+from sqlalchemy import and_, delete, select, update
 from sqlalchemy.ext.asyncio import AsyncSession
 
 from backend.sqrt_chan.app.models.base import Base

@@ -1,8 +1,9 @@
-from sqlalchemy import select, update, delete
+from sqlalchemy import delete, select, update
 from sqlalchemy.ext.asyncio import AsyncSession
-from sqlalchemy.orm import selectinload
+from sqlalchemy.orm import selectinload, with_loader_criteria
 
 from backend.sqrt_chan.app.models.board import Board
+from backend.sqrt_chan.app.models.thread import Thread
 from backend.sqrt_chan.app.repository.base_repo import BaseRepository
 from backend.sqrt_chan.app.utils.decorators import handler_db_errors
 
@@ -16,16 +17,6 @@ class BoardRepository(BaseRepository[Board]):
         stmt = select(self.model)
         res = await self.session.execute(stmt)
         return res.scalars().all()
-
-    @handler_db_errors
-    async def get_by_slug(self, model_slug: str):
-        stmt = (
-            select(self.model)
-            .options(selectinload(self.model.threads))
-            .where(self.model.slug == model_slug)
-        )
-        res = await self.session.execute(stmt)
-        return res.scalar_one_or_none()
 
     @handler_db_errors
     async def update(self, model_slug: str, **kwargs):

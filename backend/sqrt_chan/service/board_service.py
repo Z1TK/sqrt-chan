@@ -14,8 +14,11 @@ class BoardService:
         value = dto.model_dump()
         return await self.board_repo.create(**value)
 
-    async def get_board(self, board_slug: str):
-        return await self.board_repo.get_by_slug(board_slug)
+    # async def get_available_threads(self, board_slug: str):
+    #     return await self.board_repo.get_by_slug(board_slug, False)
+
+    # async def get_archive_threads(self, board_slug: str):
+    #     return await self.board_repo.get_by_slug(board_slug, True)
 
     async def update_board(self, board_slug: str, dto: BoardUS):
         value = dto.model_dump(exclude_unset=True)

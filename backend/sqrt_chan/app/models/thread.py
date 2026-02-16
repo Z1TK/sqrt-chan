@@ -13,7 +13,6 @@ class Thread(Base):
     title: Mapped[str] = mapped_column(String(255))
     content: Mapped[str | None] = mapped_column(Text, nullable=True)
     image: Mapped[str | None] = mapped_column(String(255), nullable=True)
-    is_closed: Mapped[bool] = mapped_column(Boolean, server_default="false")
     is_archived: Mapped[bool] = mapped_column(Boolean, server_default="false")
     bump_count: Mapped[int] = mapped_column(Integer, default=0)
     posts: Mapped[list["Post"]] = relationship(
