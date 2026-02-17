@@ -18,7 +18,6 @@ class ThreadPreview(BaseModel):
     title: Annotated[str, Field(max_length=255)]
     content: str | None = None
     image: Annotated[str | None, Field(max_length=255)] = None
-    is_closed: bool
     is_archived: bool
     bump_count: int
     created_at: datetime

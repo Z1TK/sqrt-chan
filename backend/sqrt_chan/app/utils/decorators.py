@@ -1,6 +1,7 @@
 from functools import wraps
 
-from sqlalchemy.exc import DataError, IntegrityError, NoResultFound, OperationalError
+from sqlalchemy.exc import (DataError, IntegrityError, NoResultFound,
+                            OperationalError)
 
 
 def handler_db_errors(func):

@@ -1,8 +1,7 @@
 from fastapi import APIRouter, Depends
 
-from backend.sqrt_chan.app.repository.board_repo import BoardRepository
 from backend.sqrt_chan.app.schemas.board import *
-from backend.sqrt_chan.app.utils.session import get_service
+from backend.sqrt_chan.app.utils.depends import get_board_service
 from backend.sqrt_chan.service.board_service import BoardService
 
 board = APIRouter(prefix="/boards")
@@ -11,29 +10,27 @@ board = APIRouter(prefix="/boards")
 @board.post("", response_model=BoardPreview)
 async def create_new_board(
     board_data: BoardCS,
-    service: BoardService = Depends(get_service(BoardService, BoardRepository)),
+    service: BoardService = Depends(get_board_service),
 ):
     return await service.create_board(board_data)
 
 
 @board.get("", response_model=list[BoardPreview])
-async def get_all_boards(
-    service: BoardService = Depends(get_service(BoardService, BoardRepository))
-):
+async def get_all_boards(service: BoardService = Depends(get_board_service)):
     return await service.all_boards()
 
 
 # @board.get("/{slug}", response_model=BoardRS)
 # async def get_board_with_threads(
 #     slug: str,
-#     service: BoardService = Depends(get_service(BoardService, BoardRepository)),
+#     service: BoardService = Depends(get_board_service),
 # ):
 #     return await service.get_available_threads(slug)
 
 # @board.get('/{slug}/archive', response_model=BoardRS)
 # async def get_board_archive(
 #     slug: str,
-#     service: BoardService = Depends(get_service(BoardService, BoardRepository)),
+#     service: BoardService = Depends(get_board_service),
 # ):
 #     return await service.get_archive_threads(slug)
 
@@ -42,7 +39,7 @@ async def get_all_boards(
 async def update_board_by_slug(
     slug: str,
     board_data: BoardUS,
-    service: BoardService = Depends(get_service(BoardService, BoardRepository)),
+    service: BoardService = Depends(get_board_service),
 ):
     return await service.update_board(slug, board_data)
 
@@ -50,6 +47,6 @@ async def update_board_by_slug(
 @board.delete("")
 async def delete_board_by_slug(
     slug: str,
-    service: BoardService = Depends(get_service(BoardService, BoardRepository)),
+    service: BoardService = Depends(get_board_service),
 ):
     await service.delete_board(slug)

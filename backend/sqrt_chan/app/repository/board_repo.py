@@ -19,6 +19,12 @@ class BoardRepository(BaseRepository[Board]):
         return res.scalars().all()
 
     @handler_db_errors
+    async def get_by_slug(self, model_slug):
+        stmt = select(self.model).where(self.model.slug == model_slug)
+        res = await self.session.execute(stmt)
+        return res.scalar_one_or_none()
+
+    @handler_db_errors
     async def update(self, model_slug: str, **kwargs):
         stmt = (
             update(self.model)
