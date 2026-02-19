@@ -1,8 +1,10 @@
 from fastapi import APIRouter, Depends, Request
 
+from backend.sqrt_chan.app.schemas.role import Role
 from backend.sqrt_chan.app.schemas.thread import *
-from backend.sqrt_chan.app.utils.depends import get_thread_service
 from backend.sqrt_chan.app.utils.hash import get_user_ip
+from backend.sqrt_chan.app.utils.role import require_moderator
+from backend.sqrt_chan.app.utils.session import get_thread_service
 from backend.sqrt_chan.service.thread_service import ThreadService
 
 thread = APIRouter()
@@ -28,7 +30,7 @@ async def get_all_threads(
 
 
 @thread.get("/{board_slug}/archive", response_model=list[ThreadPreview])
-async def get_all_threads(
+async def get_archive_threads(
     board_slug: str,
     service: ThreadService = Depends(get_thread_service),
 ):
@@ -50,6 +52,7 @@ async def update_thread_by_slug(
     thread_id: int,
     thread_data: ThreadUS,
     service: ThreadService = Depends(get_thread_service),
+    _: Role = Depends(require_moderator),
 ):
     return await service.update_thread(board_slug, thread_id, thread_data)
 
@@ -59,5 +62,6 @@ async def delete_threads(
     board_slug: str,
     thread_ids: int,
     service: ThreadService = Depends(get_thread_service),
+    _: Role = Depends(require_moderator),
 ):
     await service.delete_threads(board_slug, thread_ids)

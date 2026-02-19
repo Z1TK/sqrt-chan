@@ -1,12 +1,11 @@
 from fastapi import APIRouter, Depends, Request
 
-from backend.sqrt_chan.app.repository.post_repo import PostRepository
-from backend.sqrt_chan.app.repository.thread_repo import ThreadRepository
 from backend.sqrt_chan.app.schemas.post import *
-from backend.sqrt_chan.app.utils.depends import get_post_service
+from backend.sqrt_chan.app.schemas.role import Role
 from backend.sqrt_chan.app.utils.hash import get_user_ip
+from backend.sqrt_chan.app.utils.role import require_moderator
+from backend.sqrt_chan.app.utils.session import get_post_service
 from backend.sqrt_chan.service.post_service import PostService
-from backend.sqrt_chan.service.thread_service import ThreadService
 
 reply_post = APIRouter()
 
@@ -38,5 +37,6 @@ async def update_post_by_id(
     post_id: int,
     post_data: PostUS,
     service: PostService = Depends(get_post_service),
+    _: Role = Depends(require_moderator),
 ):
     return await service.update_post(thread_id, post_id, post_data)

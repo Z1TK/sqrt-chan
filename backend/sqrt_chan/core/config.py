@@ -11,6 +11,10 @@ class Settings(BaseSettings):
     db_name: str
 
     salt: str
+    key: str
+    admin_key: str
+    moder_key: str
+    algorithm: str
 
     model_config = SettingsConfigDict(
         env_file=os.path.abspath(

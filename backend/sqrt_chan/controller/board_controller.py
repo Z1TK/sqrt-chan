@@ -1,7 +1,9 @@
 from fastapi import APIRouter, Depends
 
 from backend.sqrt_chan.app.schemas.board import *
-from backend.sqrt_chan.app.utils.depends import get_board_service
+from backend.sqrt_chan.app.schemas.role import Role
+from backend.sqrt_chan.app.utils.role import require_admin
+from backend.sqrt_chan.app.utils.session import get_board_service
 from backend.sqrt_chan.service.board_service import BoardService
 
 board = APIRouter(prefix="/boards")
@@ -11,6 +13,7 @@ board = APIRouter(prefix="/boards")
 async def create_new_board(
     board_data: BoardCS,
     service: BoardService = Depends(get_board_service),
+    _: Role = Depends(require_admin),
 ):
     return await service.create_board(board_data)
 
@@ -40,6 +43,7 @@ async def update_board_by_slug(
     slug: str,
     board_data: BoardUS,
     service: BoardService = Depends(get_board_service),
+    _: Role = Depends(require_admin),
 ):
     return await service.update_board(slug, board_data)
 
@@ -48,5 +52,6 @@ async def update_board_by_slug(
 async def delete_board_by_slug(
     slug: str,
     service: BoardService = Depends(get_board_service),
+    _: Role = Depends(require_admin),
 ):
     await service.delete_board(slug)
