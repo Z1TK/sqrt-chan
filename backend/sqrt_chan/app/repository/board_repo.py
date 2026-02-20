@@ -19,16 +19,10 @@ class BoardRepository(BaseRepository[Board]):
         return res.scalars().all()
 
     @handler_db_errors
-    async def get_by_slug(self, model_slug):
-        stmt = select(self.model).where(self.model.slug == model_slug)
-        res = await self.session.execute(stmt)
-        return res.scalar_one_or_none()
-
-    @handler_db_errors
-    async def update(self, model_slug: str, **kwargs):
+    async def update(self, board_slug: str, **kwargs):
         stmt = (
             update(self.model)
-            .where(self.model.slug == model_slug)
+            .where(self.model.slug == board_slug)
             .values(**kwargs)
             .returning(self.model)
         )
@@ -37,7 +31,7 @@ class BoardRepository(BaseRepository[Board]):
         return res.scalar_one_or_none()
 
     @handler_db_errors
-    async def remove(self, model_slug) -> None:
-        stmt = delete(self.model).where(self.model.slug == model_slug)
+    async def remove(self, board_slug) -> None:
+        stmt = delete(self.model).where(self.model.slug == board_slug)
         await self.session.execute(stmt)
         await self.session.flush()

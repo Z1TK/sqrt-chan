@@ -1,12 +1,12 @@
 from datetime import datetime
 from typing import Annotated
 
-from pydantic import BaseModel, Field
-
+from pydantic import BaseModel, Field, ConfigDict
 from backend.sqrt_chan.app.schemas.post import PostRS
 
 
 class ThreadCS(BaseModel):
+    model_config = ConfigDict(extra="allow")
     title: Annotated[str, Field(max_length=255)]
     content: str | None = None
     image: Annotated[str | None, Field(max_length=255)] = None

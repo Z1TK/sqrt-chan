@@ -10,17 +10,6 @@ class PostRepository(BaseRepository[Post]):
     def __init__(self, async_session: AsyncSession):
         super().__init__(Post, async_session)
 
-    # @handler_db_errors
-    # async def get_all(self, board_slug: str, thread_id: int):
-    #     conditions = [
-    #         self.model.board_slug == board_slug,
-    #         self.model.thread_id == thread_id,
-    #         self.model.is_deleted == False,
-    #     ]
-    #     stmt = select(self.model).where(and_(*conditions))
-    #     res = await self.session.execute(stmt)
-    #     return res.scalars().all()
-
     @handler_db_errors
     async def update(self, thread_id: int, post_id, **kwargs):
         condition = [

@@ -22,15 +22,6 @@ async def create_new_post(
     return await service.create_post(board_slug, thread_id, ip, post_data)
 
 
-# @reply_post.get("/{board_slug}/threads/{thread_id}", response_model=list[PostRS])
-# async def get_all_posts(
-#     board_slug: str,
-#     thread_id: int,
-#     service: PostService = Depends(get_service(PostService, PostRepository)),
-# ):
-#     return await service.get_all_posts(board_slug, thread_id)
-
-
 @reply_post.patch("/threads/{thread_id}/{post_id}")
 async def update_post_by_id(
     thread_id: int,

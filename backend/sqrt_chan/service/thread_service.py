@@ -11,8 +11,7 @@ class ThreadService:
         self.post_repo = post_repo
 
     async def create_threads(self, board_slug: str, ip: str, dto: ThreadCS):
-        value = dto.model_dump()
-        value["board_slug"] = board_slug
+        value = dto.model_copy(update={'board_slug': board_slug}).model_dump()
         thread = await self.thread_repo.create(**value)
         ip_hash = get_hash_ip(ip, thread.id)
         post = (

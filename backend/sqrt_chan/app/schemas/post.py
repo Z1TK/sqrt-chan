@@ -6,7 +6,6 @@ from pydantic import BaseModel, ConfigDict, Field
 
 class PostCS(BaseModel):
     model_config = ConfigDict(extra="allow")
-
     content: Annotated[str | None, Field()] = None
     image: Annotated[str | None, Field(max_length=255)] = None
 

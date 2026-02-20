@@ -23,21 +23,6 @@ async def get_all_boards(service: BoardService = Depends(get_board_service)):
     return await service.all_boards()
 
 
-# @board.get("/{slug}", response_model=BoardRS)
-# async def get_board_with_threads(
-#     slug: str,
-#     service: BoardService = Depends(get_board_service),
-# ):
-#     return await service.get_available_threads(slug)
-
-# @board.get('/{slug}/archive', response_model=BoardRS)
-# async def get_board_archive(
-#     slug: str,
-#     service: BoardService = Depends(get_board_service),
-# ):
-#     return await service.get_archive_threads(slug)
-
-
 @board.patch("", response_model=BoardPreview)
 async def update_board_by_slug(
     slug: str,
